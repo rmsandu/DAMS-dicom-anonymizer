@@ -8,7 +8,7 @@ import os
 import xml.etree.ElementTree as ET
 
 
-def encode_xml(filename, patient_id, patient_name, patient_dob,  df_ct_mapping):
+def encode_xml(filename, patient_id, patient_name, patient_dob, df_ct_mapping):
     """
     Remove the identifying information from the XML files. Update the SeriesInstanceUID after modifying the corrupt DICOM
     :param filename:
@@ -83,4 +83,3 @@ def main_encode_xml(rootdir, patient_id, patient_name, patient_dob, df_ct_mappin
                 xmlFilePathName = os.path.join(subdir, file)
                 xmlfilename = os.path.normpath(xmlFilePathName)
                 encode_xml(xmlfilename, patient_id, patient_name, patient_dob, df_ct_mapping)
-

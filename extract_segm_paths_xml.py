@@ -5,6 +5,8 @@ Created  June 2019
 @author: Raluca Sandu
 """
 import os
+
+import pandas as pd
 import untangle as ut
 
 
@@ -96,8 +98,8 @@ def create_tumour_ablation_mapping(dir_xml_files, list_segmentations_paths_xml):
                                          item["SphereRadius"] == sphere_radius),
                                         None)
                                 except AttributeError:
-                                    print('WTF')
-                                    # print(list_segmentations_paths_xml)
+
+                                    print(list_segmentations_paths_xml)
                                 if path_series_found is None or sphere_radius_found is None:
                                     # only add unique segmentations paths, skip duplicates
                                     list_segmentations_paths_xml.append(dict_series_path_xml)
@@ -106,3 +108,29 @@ def create_tumour_ablation_mapping(dir_xml_files, list_segmentations_paths_xml):
                         list_segmentations_paths_xml.append(None)
 
         return list_segmentations_paths_xml
+
+
+def create_dict_paths_series_xml(rootdir):
+    """
+
+    :param rootdir:
+    :return:
+    """
+    list_segmentations_paths_xml = []
+    for subdir, dirs, files in os.walk(rootdir):
+        if 'Segmentations' in subdir and 'SeriesNo_' in subdir:
+            path_segmentations, foldername = os.path.split(subdir)
+            path_recordings, foldername = os.path.split(path_segmentations)
+            dict_segmentations_paths_xml = \
+                create_tumour_ablation_mapping(path_recordings, list_segmentations_paths_xml)
+    df_segmentations_paths_xml = pd.DataFrame(list_segmentations_paths_xml)
+    # check if the dataframe is empty, exit the script if true
+    if df_segmentations_paths_xml.empty:
+        print("No Segmentations Paths found in the XML Cas-Recordings for Directory:", rootdir)
+        return df_segmentations_paths_xml
+    try:
+        df_segmentations_paths_xml["TimeStartSegmentation"] = df_segmentations_paths_xml["Timestamp"].map(
+            lambda x: x.split()[0])
+    except KeyError:
+        print('The TimeStamp Column in DataFrame is empty')
+    return df_segmentations_paths_xml
