@@ -13,10 +13,11 @@ import pandas as pd
 import pydicom
 from pydicom import uid
 
-import anonymization_xml_logs
-from create_reference_tags_segmentations import main_add_reference_tags_dcm
-from define_paths_enconding import create_dict_paths_series_dcm
-from extract_segm_paths_xml import create_dict_paths_series_xml
+
+from DAMSdicomanonymizer.XML import anonymization_xml_logs
+from DAMSdicomanonymizer.ReferenceTags.create_reference_tags_segmentations import main_add_reference_tags_dcm
+from DAMSdicomanonymizer.XML.define_paths_encoding import create_dict_paths_series_dcm
+from DAMSdicomanonymizer.XML.extract_segm_paths_xml import create_dict_paths_series_xml
 
 
 def encode_dcm_files_patient(rootdir, patient_name, patient_id, patient_dob):
@@ -84,7 +85,7 @@ def fix_segmentations_dcm_tags(rootdir, patient_name, patient_id, patient_dob):
                 dataset_segm.PatientBirthDate = patient_dob
                 dataset_segm.InstitutionName = "None"
                 dataset_segm.InstitutionAddress = "None"
-                # dataset_segm.SliceLocation = dataset_segm.ImagePositionPatient[2]
+                dataset_segm.SliceLocation = dataset_segm.ImagePositionPatient[2]
                 dataset_segm.SOPInstanceUID = uid.generate_uid()
                 dataset_segm.SeriesInstanceUID = SeriesInstanceUID_segmentation
                 dataset_segm.InstanceNumber = k
@@ -101,6 +102,7 @@ if __name__ == '__main__':
                     help="patient name to be encoded into the files. eg: MAVM03")
     ap.add_argument("-u", "--patient_id", required=True, help="patient id to be encoded into the files. eg: M03")
     ap.add_argument("-d", "--patient_dob", required=True, help="patient date of birth in format eg: 19380101")
+
     ap.add_argument("-s", "--fix_segmentation_series", required=False, help="fix SeriesInstance UIDs of Segmentations")
     ap.add_argument("-x", "--xml_encoding", required=False, help="encode XML files")
     ap.add_argument("-m", "--mapping_segmentations", required=False,
@@ -142,6 +144,7 @@ if __name__ == '__main__':
         print("Patient Folder Anonymized/Encoded:", args["patient_name"])
 
     else:
+        # todo: fix batch processing
         # batch processing and I will assume you have a type of file (excel in this case) with filepaths to multiple folders
         df = pd.read_excel(args["input_batch_proc"])
         df.drop_duplicates(subset=["Patient_ID"], inplace=True)
