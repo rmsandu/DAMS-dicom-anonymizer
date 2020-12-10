@@ -30,11 +30,15 @@ The following DICOM fields were **deleted** (i.e. replaced with `None` value).
 - `PyDicom` (for DICOM processing)
 - `Untagle` (for XML files processing)
 ## Usage for Single Patient Folder 
- To avoid errors keep all the files associated with 1 patient and 1 study (multiple series possible) in one folder, otherwise the de-identification will be inconsistent. The original files will be modified and also will remain grouped in their original patients, studies, and series. Careful about overwriting original raw data.
- To execute the de-identification run the `__main__.py` script. 
-     `python -m DAMS-dicom-anonymizer --i "C:\patientfolder\PAT_M001" --patient_name "MEVR001" --patient_id "R001" --patient_dob "19500101"`
-    or use the short names:
-    `python -m DAMS-dicom-anonymizer -i "C:\Patients\Pat_M07" -n "MAVM07" -u "M07" -d "194901001"`
+To avoid errors keep all the files associated with 1 patient and 1 study (multiple series possible) in one folder, otherwise the de-identification will be inconsistent. The original files will be modified and also will remain grouped in their original patients, studies, and series. Careful about overwriting original raw data.
+ 
+To execute the de-identification run the `__main__.py` script. 
+ 
+     python -m DAMSdicomanonymizer --i "C:\patientfolder\PAT_M001" --patient_name "MEVR001" --patient_id "R001" --patient_dob "19500101" 
+     
+or use the short names:
+    
+    python -m DAMSdicomanonymizer -i "C:\Patients\Pat_M07" -n "MAVM07" -u "M07" -d "194901001"
    
 The following functions are then called:
 - `get_args()`
