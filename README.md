@@ -9,8 +9,9 @@ These scripts perform some simple DICOM encoding (anonymization) and mapping bet
 The following DICOM metatags are encoded/anonymized:
 - `PatientName (0010,0010)` - **Encoded**
 - `PatientID 	(0010,0020)` - **Encoded**
-- `PatientBirthDate 	(0010,0030)` (I kept the year of birth, set the month and day to 0101) - **Encoded**
-The following DICOM fields were **deleted** (i.e. replaced with None value).
+- `PatientBirthDate 	(0010,0030)` - **Encoded** 
+
+The following DICOM fields were **deleted** (i.e. replaced with `None` value).
 - `PatientSex` 
 - `InstitutionName`
 - `InstitutionAddress`
