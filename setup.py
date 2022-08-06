@@ -19,7 +19,7 @@ setuptools.setup(
         "pandas>=1.1",
         "xlrd>=1.2.0",
         "pydicom>=1.2.2",
-        "untangle==1.1.1"
+        "untangle==1.2.1"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
